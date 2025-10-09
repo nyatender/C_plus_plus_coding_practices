@@ -69,6 +69,11 @@ AdvancedDataStructure/*/Debug/*
 *.vcxproj.filters
 *.VC.db
 *.VC.opendb
-.vs/*
+.vs
+.vs/C_plus_plus_STL
+DesignProblems/x64
+StringPractice/x64
+x64
+
 
 

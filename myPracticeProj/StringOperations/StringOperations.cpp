@@ -63,6 +63,10 @@ void strOpr()
     int b[4];
     std::copy(std::begin(a), std::end(a), std::begin(b));
 
+
+    int num = 123;
+    std::string str = std::to_string(num);
+
 }
 
 int main() {

@@ -4,12 +4,14 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <set>
 #include <list>
 #include <stack>
 #include <queue>
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+#include <ranges>
 
 using namespace std;
 
@@ -280,9 +282,175 @@ list<char> longestIncreasingSequence(string str1, string str2) {
     return buildSequence(lcs);
 }
 
+struct trie {
+    unordered_map<char, trie*> children;
+    bool isEndOfTheWord;
+    trie() {
+        this->isEndOfTheWord = false;
+    }
+};
+
+bool findString(trie* root, string input) {
+    trie *tempRoot = root;
+    for (int i = 0; i < input.size(); i++) {
+        char ch = input[i];
+        tempRoot = tempRoot->children[ch];
+        if (tempRoot == nullptr)
+            return false;
+    }
+
+    return tempRoot->isEndOfTheWord;
+}
+
+vector<bool>& multiStringSearch(string bigString, vector<string> smallString) {
+    trie* root = new trie();
+
+    auto temp = bigString | std::ranges::views::split(' ');
+    vector<string>tokens;
+    for (auto&& token : temp) {
+        std::string s(token.begin(), token.end());
+        tokens.push_back(s);
+    }
+
+    for (int i = 0; i < tokens.size(); i++) {
+        trie *tempRoot = root;
+        for (auto& it : tokens[i]) {
+            if(tempRoot && !tempRoot->children.contains(it))
+                tempRoot->children.insert({ it, new trie() });
+
+            tempRoot = tempRoot->children[it];
+        }
+        tempRoot->isEndOfTheWord = true;
+    }
+
+    static vector<bool> result(smallString.size(), false);
+    int i = 0;
+    for (const auto& it : smallString) {
+        result[i] = findString(root, it);
+
+        //if (result[i] == true)
+        //    cout << " true \t";
+        //else
+        //    cout << " false \t";
+        i++;
+    }
+
+    return result;
+}
+/*
+
+gogopowerrangergogopowerranger -> 30
+
+go, powerranger
+
+8, 22
+
+xxyxxy
+
+6 - 22
+x-1
+y-13
+
+x-2
+y-11
+
+*/
+
+// clementisacap
+
+void longestStrWithoutDuplicate(string str) {
+    unordered_map<char, int> visited;
+    int maxLen = 0;
+    int start = 0;
+    string result;
+    for (int i = 0; i < str.size(); i++) {
+        if (!visited.contains(str[i])) {
+            visited.insert({ str[i], i });
+        }
+        else {
+            start = max(start, visited[str[i]] + 1);
+            if ((i - start + 1) > maxLen) {
+                result = result.substr(start, i+1);
+                maxLen = i - start + 1;
+            }
+            visited[str[i]] = i;
+        }
+    }
+}
+
+bool interLeavingStrUtils(string str1, string str2, string str3, int i, int j) {
+    int k = i + j;
+    if (k == str3.size()) {
+        return true;
+    }
+
+    if (i < str1.size() && str1[i] == str3[k]) {
+        if (interLeavingStrUtils(str1, str2, str3, i + 1, j))
+            return true;
+    }
+
+    if (j < str2.size() && str2[j] == str3[k]) {
+        return interLeavingStrUtils(str1, str2, str3, i, j+1);
+    }
+
+    return false;
+}
+
+bool interLeavingStr(string str1, string str2, string str3) {
+    interLeavingStrUtils(str1, str2, str3, 0, 0);
+}
+
+void swap(int arr[], int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+int getPivotNode(int arr[], int left, int right) {
+
+    int j = 0;
+    int pivot = arr[right];
+    int i = left - 1;
+
+    for (; j <= right-1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr, i, j);
+        }
+    }
+    swap(arr, i + 1, right);
+    return i + 1;
+}
+
+void quickSort(int arr[], int left, int right) {
+
+    if (right > left)
+        return;
+
+    int pivotNodeIndex = getPivotNode(arr, left, right);
+
+    quickSort(arr,left, pivotNodeIndex-1);
+    quickSort(arr, pivotNodeIndex+1, right-1);
+
+}
+/*
+
+2 -> 1 -> 3 -> 4
+3 -> 1 -> 4
+4 -> 2 
+
+*/
+
 int main()
 {
-    
+    vector<string> smallString = { "this","yo", "is", "a", "bigger", "string", "kappa" };
+    static vector<bool> result1 = multiStringSearch("this is a big string", smallString);
+
+    for (int i = 0; i < result1.size(); i++) {
+        if (result1[i] == true)
+            cout << " true \t";
+        else
+            cout << " false \t";
+    }
     //string str1 = "xkykzpw";
     //string str2 = "zxvvyzw";
 

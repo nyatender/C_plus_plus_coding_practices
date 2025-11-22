@@ -56,6 +56,9 @@ void strOpr()
 
     sort(arr, arr + n, [](int a, int b) { a > b;}); // ascending order
 
+    string strx = "(adsfasf))";
+    strx.find_first_of('(');
+
 
     // https://stackoverflow.com/questions/16137953/is-there-a-function-to-copy-an-array-in-c-c
 
@@ -66,6 +69,12 @@ void strOpr()
 
     int num = 123;
     std::string str = std::to_string(num);
+
+    string str = "splitwise";
+    int index = 5; // Remove character at index 5 ('w')
+
+    // Remove character at given index
+    str.erase(index, 1); // 1 means number of characters to remove
 
 }
 

@@ -45,6 +45,44 @@ vector<int> getUnExpiredTokens(int time_to_live, vector<string> queries) {
 
 }
 
+//Optimized all test cases passed
+//vector<int> getUnExpiredTokens(int time_to_live, vector<string> queries) {
+//	unordered_map<string, int> tokensMap;
+//	priority_queue<pair<int, string>, vector<pair<int, string>>, greater<>> min_heap;
+//	vector<int> result;
+//	int time, expiry;
+//	string command, token;
+//
+//	for (const string& query : queries) {
+//		istringstream ss(query);
+//		ss >> command;
+//		if (command == "generate") {
+//			ss >> token >> time;
+//			expiry = time + time_to_live;
+//			tokensMap[token] = expiry;
+//			min_heap.emplace(expiry, token);
+//		}
+//		else if (command == "renew") {
+//			ss >> token >> time;
+//			if (tokensMap.count(token) && tokensMap[token] > time) {
+//				expiry = time + time_to_live;
+//				tokensMap[token] = expiry;
+//				min_heap.emplace(expiry, token);
+//			}
+//		}
+//		else { // count
+//			ss >> time;
+//			while (!min_heap.empty() && min_heap.top().first <= time) {
+//				auto [exp, tk] = min_heap.top();
+//				min_heap.pop();
+//				if (tokensMap[tk] == exp) tokensMap.erase(tk);
+//			}
+//			result.push_back(tokensMap.size());
+//		}
+//	}
+//	return result;
+//}
+
 int main_microsoft2() {
 
 	// Test case 1

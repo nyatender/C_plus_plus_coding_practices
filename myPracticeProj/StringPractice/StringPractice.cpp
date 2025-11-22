@@ -397,7 +397,7 @@ bool interLeavingStrUtils(string str1, string str2, string str3, int i, int j) {
 }
 
 bool interLeavingStr(string str1, string str2, string str3) {
-    interLeavingStrUtils(str1, str2, str3, 0, 0);
+    return interLeavingStrUtils(str1, str2, str3, 0, 0);
 }
 
 void swap(int arr[], int i, int j) {
